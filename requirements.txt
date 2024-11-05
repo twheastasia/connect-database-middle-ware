@@ -1,0 +1,7 @@
+pymysql
+requests
+cassandra-driver
+fastapi
+uvicorn[standard]
+taospy[ws]
+clickhouse-connect

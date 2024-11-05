@@ -1,0 +1,9 @@
+version: '3'
+services:
+  connect-database-middleware-service:
+    image: twheastasia/connect-database-middleware-service:latest
+    build: .
+    container_name: connect-database-middleware-service
+    ports:
+      - 13653:80
+    restart: always
