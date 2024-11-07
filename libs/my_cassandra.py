@@ -6,12 +6,14 @@ from cassandra.auth import PlainTextAuthProvider
 from ssl import SSLContext, PROTOCOL_TLSv1_2, CERT_NONE
 from cassandra.query import SimpleStatement
 from libs import utils
-from libs.logs import MyLog
+from libs.my_logs import MyLog
 import datetime
 
+# 基于cassandra数据库基础数据对象类
 class MyCassandra():
     def __init__(self, env) -> None:
         self.log = MyLog()
+        # business related config
         config_json = utils.read_json('./config/db.json')
         self.cassandra_to_config = config_json[env]
         self.session = self._connect_cassandra(self.cassandra_to_config['urls'], self.cassandra_to_config['port'], self.cassandra_to_config['keyspace'], self.cassandra_to_config['username'], self.cassandra_to_config['password'], self.cassandra_to_config['useSSL'])

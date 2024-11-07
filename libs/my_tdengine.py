@@ -4,8 +4,9 @@ __author__ = 'weihai'
 import datetime
 import time
 from taosrest import connect, RestClient, TaosRestConnection, TaosRestCursor
-from libs.logs import MyLog
+from libs.my_logs import MyLog
 
+# 基于TDEngine数据库基础数据对象类
 class MyDatabaseTDEngine():
 
     def __init__(self, db_config) -> None:

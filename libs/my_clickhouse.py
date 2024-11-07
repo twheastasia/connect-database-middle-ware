@@ -2,7 +2,7 @@
 __author__ = 'weihai'
 
 import clickhouse_connect
-from libs.logs import MyLog
+from libs.my_logs import MyLog
 
 # 基于Clickhouse数据库基础数据对象类
 class MyDatabaseClickHouse(object):

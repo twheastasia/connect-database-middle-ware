@@ -5,14 +5,14 @@ FROM twheastasia/connect-database-middleware-service-base:latest
 # 
 WORKDIR /code
 
-# # 
-# COPY ./requirements.txt /code/requirements.txt
-
-# # 
-# RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+# 
+COPY ./requirements.txt /code/requirements.txt
 
 # 
-COPY . /code
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-# 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+# # 
+# COPY . /code
+
+# # 
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

@@ -3,9 +3,9 @@ __author__ = 'weihai'
 
 import pymysql, sys, os, time
 from pymysql.cursors import DictCursor
-from libs.logs import MyLog
+from libs.my_logs import MyLog
 
-# 最基本的数据库查询方法
+# 最基本的Mysql数据库查询方法
 class MyDatabaseMysql():
     # 生成实例时，告诉系统要连接哪个数据库
     def __init__(self, config):
