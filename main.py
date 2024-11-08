@@ -231,7 +231,7 @@ class MongodbFindManyRequestBody(BaseModel):
         default=0, title="MongoDB skip",
     )
     columns_need_convert_to_str: list = Field(
-        default=['_id'], title="MongoDB which columns need convert to str",
+        default=[], title="MongoDB which columns need convert to str",
     )
 
 class MongodbInsertRequestBody(BaseModel):
