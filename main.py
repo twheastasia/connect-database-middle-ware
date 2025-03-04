@@ -477,7 +477,7 @@ async def query_mongodb_delete_many(body: MongodbInsertRequestBody):
         result = my_mongodb.delete_many(body.table, data)
     finally:
         my_mongodb.close()
-    return response_success({ 'table': body.table, 'query': body.query, 'result': result })
+    return response_success({ 'table': body.table, 'data': body.data, 'result': result })
 
 
 app.include_router(router)
