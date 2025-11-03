@@ -1,4 +1,5 @@
 pymysql
+psycopg2-binary
 requests
 cassandra-driver
 fastapi

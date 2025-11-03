@@ -7,4 +7,4 @@
 - [x] tdengine
 - [x] redis
 - [x] mongodb
-
+- [x] postgresql 

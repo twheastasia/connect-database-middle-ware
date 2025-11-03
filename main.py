@@ -9,6 +9,7 @@ from libs.my_tdengine import MyDatabaseTDEngine
 from libs.my_clickhouse import MyDatabaseClickHouse
 from libs.my_redis import MyDatabaseRedis
 from libs.my_mongodb import MyDatabaseMongodb
+from libs.my_postgresql import MyDatabasePostgreSQL
 from libs.my_logs import MyLog
 from libs import utils
 from enum import Enum
@@ -53,6 +54,7 @@ fastapi_log = MyLog()
 class RouterTags(str, Enum):
     DATABASE = 'database'
     MYSQL = 'mysql'
+    POSTGRESQL = 'postgresql'
     CLICKHOUSE = 'clickhouse'
     TDENGINE = 'tdengine'
     REDIS = 'redis'
@@ -73,6 +75,23 @@ class MysqlConfig(BaseModel):
     )
     db: str = Field(
         default=None, title="Mysql database", max_length=500
+    )
+
+class PostgreSQLConfig(BaseModel):
+    host: str = Field(
+        default='localhost', title="PostgreSQL host", max_length=500
+    )
+    port: int = Field(
+        default=5432, title="PostgreSQL port"
+    )
+    user: str = Field(
+        default='postgres', title="PostgreSQL user", max_length=500
+    )
+    password: str = Field(
+        default='postgres', title="PostgreSQL password", max_length=500
+    )
+    database: str = Field(
+        default=None, title="PostgreSQL database", max_length=500
     )
 
 class TDEngineConfig(BaseModel):
@@ -126,6 +145,14 @@ class MysqlRequestBody(BaseModel):
     )
     sql: str = Field(
         default=None, title="Mysql sql",
+    )
+
+class PostgreSQLRequestBody(BaseModel):
+    config: PostgreSQLConfig = Field(
+        default=None, title="PostgreSQL config",
+    )
+    sql: str = Field(
+        default=None, title="PostgreSQL sql",
     )
 
 class TDEngineRequestBody(BaseModel):
@@ -297,6 +324,22 @@ async def query_mysql(body: MysqlRequestBody):
         result = m_mysql.queryResults(body.sql)
     finally:
         m_mysql.closeDB()
+    return response_success({ 'sql': body.sql, 'result': result })
+
+@router.post('/api/v1/database/postgresql/query', description='Get Data From PostgreSQL', name='PostgreSQL Middleware API', tags=[RouterTags.POSTGRESQL])
+async def query_postgresql(body: PostgreSQLRequestBody):
+    fastapi_log.debug(body)
+    m_postgresql = MyDatabasePostgreSQL({
+        'host': body.config.host,
+        'port': body.config.port,
+        'user': body.config.user,
+        'password': body.config.password,
+        'database': body.config.database
+    })
+    try:
+        result = m_postgresql.queryResults(body.sql)
+    finally:
+        m_postgresql.closeDB()
     return response_success({ 'sql': body.sql, 'result': result })
 
 @router.post('/api/v1/database/td/query', description='Get Data From TDEngine', name='TDEngine Middleware API', tags=[RouterTags.TDENGINE])
