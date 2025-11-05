@@ -34,9 +34,15 @@ class MyDatabasePostgreSQL():
         return self.cursor
     
     def query(self, sql):
-        cursor = self.executeSQL(sql)
-        value = cursor.fetchall()
-        index = cursor.description
+        self.cursor.execute(sql)
+        # 检查是否有结果集可以获取
+        if self.cursor.description is None:
+            # 没有结果集（INSERT、UPDATE、DELETE等）
+            self.db.commit()
+            return None, []
+        # 有结果集（SELECT等）
+        value = self.cursor.fetchall()
+        index = self.cursor.description
         return index, value
 
     def closeDB(self):
@@ -61,6 +67,11 @@ class MyDatabasePostgreSQL():
         # 根据环境选择连接的数据库
         query_result = []
         column_names, results = self.query(sql)
+        
+        # 如果没有结果集（INSERT、UPDATE、DELETE等），返回空列表
+        if column_names is None:
+            return []
+        
         column_names_list = self.changeTupleToList(column_names)
         result_list = self.changeTupleToList(results)
 
